@@ -766,9 +766,9 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
         <GhostButton onClick={back}>Back</GhostButton>
         <PrimaryButton onClick={next}>Continue</PrimaryButton>
       </ButtonGroup>
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="max-w-lg">
