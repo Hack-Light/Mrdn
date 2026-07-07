@@ -6,17 +6,45 @@ import {
 } from "lucide-react";
 
 const TOKENS = {
+  // Primary - Deep Navy with refined depth
   ink: "#0F1B2D",
-  bg: "#F4F6F8",
+  inkDark: "#081016",
+  inkLight: "#1A2A3F",
+  
+  // Neutrals - Enhanced grays with better contrast
+  bg: "#F8FAFC",
+  bgAlt: "#F1F5F9",
   surface: "#FFFFFF",
-  line: "#E2E6EA",
-  muted: "#5B6572",
-  accent: "#C68A33",
-  accentDark: "#A56F22",
-  success: "#1F8A70",
-  successBg: "#E7F5F1",
-  hold: "#B5482A",
-  holdBg: "#FBEDE7",
+  line: "#E0E7F1",
+  lineSoft: "#EDF0F7",
+  muted: "#64748B",
+  mutedLight: "#94A3B8",
+  
+  // Primary Accent - Refined Gold
+  accent: "#D4A037",
+  accentDark: "#B88A28",
+  accentLight: "#E8C660",
+  accentBg: "#FEF6E8",
+  
+  // Secondary Accent - Emerald
+  secondary: "#0D9488",
+  secondaryLight: "#14B8A6",
+  secondaryBg: "#F0FDF9",
+  
+  // Functional colors
+  success: "#16A34A",
+  successBg: "#ECFDF5",
+  successDark: "#15803D",
+  
+  hold: "#DC2626",
+  holdBg: "#FEF2F2",
+  
+  // Shadows and overlays
+  shadowXs: "rgba(15, 27, 45, 0.04)",
+  shadowSm: "rgba(15, 27, 45, 0.08)",
+  shadowMd: "rgba(15, 27, 45, 0.12)",
+  shadowLg: "rgba(15, 27, 45, 0.16)",
+  overlay: "rgba(0, 0, 0, 0.4)",
 };
 
 const FONTS = `
@@ -72,15 +100,15 @@ function Logo({ small }) {
 
 function TopBar({ onMenu, showAccount }) {
   return (
-    <div className="flex items-center justify-between px-4 py-3.5 border-b sticky top-0 z-10" style={{ borderColor: TOKENS.line, background: TOKENS.surface }}>
+    <div className="flex items-center justify-between px-4 py-4 border-b sticky top-0 z-10 backdrop-blur-sm" style={{ borderColor: TOKENS.lineSoft, background: `${TOKENS.surface}F2`, boxShadow: `0 1px 3px ${TOKENS.shadowSm}` }}>
       <div className="flex items-center gap-3">
-        <button onClick={onMenu} className="p-1 -ml-1" style={{ color: TOKENS.ink }}>
+        <button onClick={onMenu} className="p-1.5 -ml-1.5 rounded-lg transition-colors duration-200 hover:bg-opacity-50" style={{ color: TOKENS.ink, background: `${TOKENS.bg}66` }}>
           <Menu size={20} />
         </button>
         <Logo small />
       </div>
       {showAccount && (
-        <div className="flex items-center gap-1.5 f-body text-xs" style={{ color: TOKENS.muted }}>
+        <div className="flex items-center gap-1.5 f-body text-xs font-medium px-3 py-2 rounded-lg" style={{ color: TOKENS.secondary, background: TOKENS.secondaryBg }}>
           <Building2 size={14} />
           <span>Business Owner</span>
         </div>
@@ -93,7 +121,7 @@ function NavSidebar({ screen, setScreen, open, setOpen }) {
   const Item = ({ item }) => (
     <button
       onClick={() => { setScreen(item.key); setOpen(false); }}
-      className="w-full text-left px-3 py-2.5 rounded-lg f-body text-sm transition-colors"
+      className="w-full text-left px-3.5 py-2.5 rounded-lg f-body text-sm transition-all duration-200 font-medium hover:bg-opacity-60"
       style={{
         background: screen === item.key ? TOKENS.ink : "transparent",
         color: screen === item.key ? "#fff" : TOKENS.ink,
@@ -105,19 +133,19 @@ function NavSidebar({ screen, setScreen, open, setOpen }) {
   );
   return (
     <>
-      {open && <div className="absolute inset-0 bg-black/30 z-20" onClick={() => setOpen(false)} />}
+      {open && <div className="absolute inset-0 z-20 transition-opacity duration-200" style={{ background: TOKENS.overlay }} onClick={() => setOpen(false)} />}
       <div
-        className={`absolute z-30 top-0 left-0 h-full w-[82%] max-w-[300px] overflow-y-auto transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full"}`}
-        style={{ background: TOKENS.surface, borderRight: `1px solid ${TOKENS.line}` }}
+        className={`absolute z-30 top-0 left-0 h-full w-[82%] max-w-[300px] overflow-y-auto transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        style={{ background: TOKENS.surface, borderRight: `1px solid ${TOKENS.lineSoft}`, boxShadow: open ? `2px 0 12px ${TOKENS.shadowMd}` : "none" }}
       >
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: TOKENS.lineSoft }}>
           <Logo small />
-          <button onClick={() => setOpen(false)}><X size={20} /></button>
+          <button onClick={() => setOpen(false)} className="p-1.5 hover:bg-opacity-50 rounded-lg transition-colors" style={{ color: TOKENS.ink, background: `${TOKENS.bg}66` }}><X size={20} /></button>
         </div>
-        <div className="p-3 space-y-1">
-          <div className="f-body text-xs font-semibold uppercase tracking-wide px-3 pt-2 pb-1" style={{ color: TOKENS.muted }}>Primary Flow</div>
+        <div className="p-3 space-y-0.5">
+          <div className="f-body text-xs font-semibold uppercase tracking-wider px-3 pt-3 pb-2" style={{ color: TOKENS.mutedLight, letterSpacing: "0.05em" }}>Primary Flow</div>
           {NAV_PRIMARY.map((i) => <Item key={i.key} item={i} />)}
-          <div className="f-body text-xs font-semibold uppercase tracking-wide px-3 pt-4 pb-1" style={{ color: TOKENS.muted }}>Other States (demo)</div>
+          <div className="f-body text-xs font-semibold uppercase tracking-wider px-3 pt-4 pb-2" style={{ color: TOKENS.mutedLight, letterSpacing: "0.05em" }}>Other States (demo)</div>
           {NAV_STATES.map((i) => <Item key={i.key} item={i} />)}
         </div>
       </div>
@@ -130,29 +158,29 @@ function BottomNav({ screen, go }) {
   const isHistory = ["history", "detail"].includes(screen);
   const isHome = screen === "dashboard";
   return (
-    <div className="relative flex items-stretch border-t shrink-0" style={{ borderColor: TOKENS.line, background: TOKENS.surface, height: 68 }}>
-      <button onClick={() => go("dashboard")} className="flex-1 flex flex-col items-center justify-center gap-1">
-        <LayoutGrid size={20} style={{ color: isHome ? TOKENS.ink : TOKENS.muted }} />
-        <span className="f-body text-[10px] font-medium" style={{ color: isHome ? TOKENS.ink : TOKENS.muted }}>Home</span>
+    <div className="relative flex items-stretch border-t shrink-0" style={{ borderColor: TOKENS.lineSoft, background: TOKENS.surface, height: 68, boxShadow: `0 -1px 3px ${TOKENS.shadowSm}` }}>
+      <button onClick={() => go("dashboard")} className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors hover:bg-opacity-50" style={{ background: isHome ? TOKENS.bgAlt : "transparent" }}>
+        <LayoutGrid size={20} style={{ color: isHome ? TOKENS.accent : TOKENS.mutedLight }} />
+        <span className="f-body text-[10px] font-semibold" style={{ color: isHome ? TOKENS.ink : TOKENS.muted }}>Home</span>
       </button>
 
       <div className="flex-1" />
 
-      <button onClick={() => go("history")} className="flex-1 flex flex-col items-center justify-center gap-1">
-        <History size={20} style={{ color: isHistory ? TOKENS.ink : TOKENS.muted }} />
-        <span className="f-body text-[10px] font-medium" style={{ color: isHistory ? TOKENS.ink : TOKENS.muted }}>History</span>
+      <button onClick={() => go("history")} className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors hover:bg-opacity-50" style={{ background: isHistory ? TOKENS.bgAlt : "transparent" }}>
+        <History size={20} style={{ color: isHistory ? TOKENS.accent : TOKENS.mutedLight }} />
+        <span className="f-body text-[10px] font-semibold" style={{ color: isHistory ? TOKENS.ink : TOKENS.muted }}>History</span>
       </button>
 
       <button
         onClick={() => go("corridor")}
-        className="absolute rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
-        style={{ background: TOKENS.ink, width: 54, height: 54, left: "50%", transform: "translateX(-50%)", top: -20 }}
+        className="absolute rounded-full flex items-center justify-center transition-all active:scale-95 active:shadow-md hover:shadow-lg"
+        style={{ background: TOKENS.ink, width: 56, height: 56, left: "50%", transform: "translateX(-50%)", top: -22, boxShadow: `0 4px 16px ${TOKENS.shadowLg}` }}
       >
-        <Plus size={22} color="#fff" />
+        <Plus size={24} color="#fff" strokeWidth={2.5} />
       </button>
       <div
-        className="absolute f-body text-[10px] font-medium text-center"
-        style={{ left: "50%", transform: "translateX(-50%)", bottom: 8, width: 88, color: isNewPayment ? TOKENS.ink : TOKENS.muted }}
+        className="absolute f-body text-[10px] font-semibold text-center"
+        style={{ left: "50%", transform: "translateX(-50%)", bottom: 6, width: 88, color: isNewPayment ? TOKENS.accent : TOKENS.muted, transition: "color 200ms" }}
       >
         New Payment
       </div>
@@ -162,7 +190,7 @@ function BottomNav({ screen, go }) {
 
 function Card({ children, className = "" }) {
   return (
-    <div className={`rounded-2xl border p-6 ${className}`} style={{ background: TOKENS.surface, borderColor: TOKENS.line }}>
+    <div className={`rounded-2xl border p-6 transition-all duration-200 ${className}`} style={{ background: TOKENS.surface, borderColor: TOKENS.lineSoft, boxShadow: `0 1px 3px ${TOKENS.shadowSm}, 0 2px 6px ${TOKENS.shadowXs}` }}>
       {children}
     </div>
   );
@@ -173,8 +201,13 @@ function PrimaryButton({ children, onClick, icon: Icon = ArrowRight, disabled })
     <button
       onClick={onClick}
       disabled={disabled}
-      className="f-body font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto transition-opacity"
-      style={{ background: disabled ? TOKENS.line : TOKENS.ink, color: disabled ? TOKENS.muted : "#fff", opacity: disabled ? 0.6 : 1 }}
+      className="f-body font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto transition-all duration-200 active:scale-95 disabled:opacity-60"
+      style={{ 
+        background: disabled ? TOKENS.lineSoft : TOKENS.ink, 
+        color: disabled ? TOKENS.mutedLight : "#fff", 
+        boxShadow: disabled ? "none" : `0 2px 8px ${TOKENS.shadowMd}`,
+        cursor: disabled ? "not-allowed" : "pointer"
+      }}
     >
       {children} <Icon size={16} />
     </button>
@@ -183,22 +216,30 @@ function PrimaryButton({ children, onClick, icon: Icon = ArrowRight, disabled })
 
 function GhostButton({ children, onClick, icon: Icon = ArrowLeft }) {
   return (
-    <button onClick={onClick} className="f-body font-medium px-5 py-3 rounded-xl flex items-center justify-center gap-2 border w-full sm:w-auto" style={{ borderColor: TOKENS.line, color: TOKENS.ink }}>
+    <button onClick={onClick} className="f-body font-medium px-5 py-3 rounded-xl flex items-center justify-center gap-2 border w-full sm:w-auto transition-all duration-200 active:scale-95 hover:bg-opacity-50" style={{ borderColor: TOKENS.lineSoft, color: TOKENS.ink, background: `${TOKENS.bg}66` }}>
       <Icon size={16} /> {children}
     </button>
   );
 }
 
 function Field({ label, value, onChange, placeholder, mono }) {
+  const [focused, setFocused] = React.useState(false);
   return (
     <label className="block mb-4">
-      <span className="f-body text-sm font-medium block mb-1.5" style={{ color: TOKENS.ink }}>{label}</span>
+      <span className="f-body text-sm font-medium block mb-2" style={{ color: TOKENS.ink }}>{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder}
-        className={`w-full px-3.5 py-2.5 rounded-lg border outline-none f-body ${mono ? "f-mono" : ""}`}
-        style={{ borderColor: TOKENS.line, color: TOKENS.ink }}
+        className={`w-full px-3.5 py-2.5 rounded-lg border outline-none f-body transition-all duration-200 ${mono ? "f-mono" : ""}`}
+        style={{ 
+          borderColor: focused ? TOKENS.accent : TOKENS.lineSoft, 
+          color: TOKENS.ink,
+          background: focused ? `${TOKENS.accentBg}66` : TOKENS.surface,
+          boxShadow: focused ? `0 0 0 3px ${TOKENS.accentBg}` : "none"
+        }}
       />
     </label>
   );
@@ -206,10 +247,13 @@ function Field({ label, value, onChange, placeholder, mono }) {
 
 function ScreenHeader({ eyebrow, title, subtitle }) {
   return (
-    <div className="mb-6">
-      {eyebrow && <div className="f-body text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: TOKENS.accentDark }}>{eyebrow}</div>}
-      <h1 className="f-display font-bold text-2xl sm:text-3xl mb-1.5" style={{ color: TOKENS.ink }}>{title}</h1>
-      {subtitle && <p className="f-body text-sm" style={{ color: TOKENS.muted }}>{subtitle}</p>}
+    <div className="mb-8">
+      {eyebrow && <div className="f-body text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2" style={{ color: TOKENS.accent, letterSpacing: "0.08em" }}>
+        <div style={{ width: 8, height: 8, background: TOKENS.accent, borderRadius: "50%" }} />
+        {eyebrow}
+      </div>}
+      <h1 className="f-display font-bold text-3xl sm:text-4xl mb-2 leading-tight" style={{ color: TOKENS.ink }}>{title}</h1>
+      {subtitle && <p className="f-body text-base leading-relaxed" style={{ color: TOKENS.muted, maxWidth: "480px" }}>{subtitle}</p>}
     </div>
   );
 }
@@ -218,12 +262,17 @@ function ScreenHeader({ eyebrow, title, subtitle }) {
 
 function StepProgress({ step, total }) {
   return (
-    <div className="relative mb-6 mt-1">
-      <div className="absolute top-2 left-0 right-0 h-[2px]" style={{ background: TOKENS.line }} />
-      <div className="absolute top-2 left-0 h-[2px] transition-all duration-500" style={{ width: `${(step / (total - 1)) * 100}%`, background: TOKENS.accent }} />
+    <div className="relative mb-8 mt-2">
+      <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
+      <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${(step / (total - 1)) * 100}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
       <div className="flex justify-between relative">
         {Array.from({ length: total }).map((_, i) => (
-          <div key={i} className="w-[8px] h-[8px] rounded-full" style={{ background: i <= step ? TOKENS.accent : TOKENS.line }} />
+          <div key={i} className="w-2.5 h-2.5 rounded-full transition-all duration-500 ring-2 ring-offset-2" style={{ 
+            background: i <= step ? TOKENS.accent : TOKENS.surface,
+            borderColor: i <= step ? TOKENS.accent : TOKENS.line,
+            border: i <= step ? "2px solid " + TOKENS.accent : `2px solid ${TOKENS.lineSoft}`,
+            ringColor: i === step ? TOKENS.accentBg : "transparent"
+          }} />
         ))}
       </div>
     </div>
@@ -232,21 +281,22 @@ function StepProgress({ step, total }) {
 
 function Upload({ label, fileName, onChange }) {
   const inputId = "upload-" + label.replace(/[^a-zA-Z0-9]/g, "");
+  const isUploaded = fileName !== null;
   return (
     <label
       htmlFor={inputId}
-      className="w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border border-dashed mb-3 text-left cursor-pointer"
-      style={{ borderColor: fileName ? TOKENS.success : TOKENS.line, background: fileName ? TOKENS.successBg : TOKENS.surface }}
+      className="w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border-2 border-dashed mb-3 text-left cursor-pointer transition-all duration-200"
+      style={{ borderColor: isUploaded ? TOKENS.success : TOKENS.lineSoft, background: isUploaded ? TOKENS.successBg : TOKENS.bgAlt }}
     >
       <div className="flex items-center gap-2.5 min-w-0">
-        <FileText size={16} style={{ color: fileName ? TOKENS.success : TOKENS.muted }} className="shrink-0" />
+        <FileText size={16} style={{ color: isUploaded ? TOKENS.success : TOKENS.muted }} className="shrink-0" />
         <div className="min-w-0">
-          <div className="f-body text-sm font-medium truncate" style={{ color: TOKENS.ink }}>{label}</div>
+          <div className="f-body text-sm font-semibold truncate" style={{ color: TOKENS.ink }}>{label}</div>
           {fileName && <div className="f-mono text-[11px] truncate" style={{ color: TOKENS.muted }}>{fileName}</div>}
         </div>
       </div>
-      <span className="f-body text-xs font-semibold shrink-0" style={{ color: fileName ? TOKENS.success : TOKENS.accentDark }}>
-        {fileName ? "Uploaded" : "Tap to upload"}
+      <span className="f-body text-xs font-bold shrink-0" style={{ color: isUploaded ? TOKENS.success : TOKENS.accent }}>
+        {fileName ? "✓ Uploaded" : "Upload"}
       </span>
       <input
         id={inputId}
@@ -261,11 +311,15 @@ function Upload({ label, fileName, onChange }) {
 
 function Checkbox({ checked, onToggle, children }) {
   return (
-    <button onClick={onToggle} className="w-full flex items-start gap-3 text-left mb-4">
-      <div className="mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0" style={{ background: checked ? TOKENS.ink : TOKENS.surface, border: `1.5px solid ${checked ? TOKENS.ink : TOKENS.line}` }}>
-        {checked && <CheckCircle2 size={14} color="#fff" />}
+    <button onClick={onToggle} className="w-full flex items-start gap-3 text-left mb-4 transition-opacity hover:opacity-70">
+      <div className="mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-200" style={{ 
+        background: checked ? TOKENS.accent : TOKENS.surface,
+        border: `2px solid ${checked ? TOKENS.accent : TOKENS.lineSoft}`,
+        boxShadow: checked ? `0 0 0 3px ${TOKENS.accentBg}` : "none"
+      }}>
+        {checked && <CheckCircle2 size={14} color={TOKENS.ink} />}
       </div>
-      <span className="f-body text-sm" style={{ color: TOKENS.ink }}>{children}</span>
+      <span className="f-body text-sm font-medium" style={{ color: TOKENS.ink }}>{children}</span>
     </button>
   );
 }
@@ -296,37 +350,44 @@ function VerificationWaiting({ onDone }) {
           </span>
           <span className="f-mono text-xs" style={{ color: TOKENS.muted }}>usually 2–5 min</span>
         </div>
-        <div className="relative mb-6 mt-3">
-          <div className="absolute top-2 left-0 right-0 h-[2px]" style={{ background: TOKENS.line }} />
-          <div className="absolute top-2 left-0 h-[2px] transition-all duration-700" style={{ width: `${donePct}%`, background: TOKENS.accent }} />
+        <div className="relative mb-8 mt-4">
+          <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
+          <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${donePct}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
           <div className="flex justify-between relative">
             {checks.map((_, i) => (
-              <div key={i} className="w-[8px] h-[8px] rounded-full transition-colors duration-500" style={{ background: i <= idx ? TOKENS.accent : TOKENS.line }} />
+              <div key={i} className="w-2.5 h-2.5 rounded-full transition-all duration-500" style={{ 
+                background: i <= idx ? TOKENS.accent : TOKENS.surface,
+                border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
+                boxShadow: i === idx ? `0 0 0 3px ${TOKENS.accentBg}` : "none"
+              }} />
             ))}
           </div>
         </div>
 
-        <div className="space-y-0.5">
+        <div className="space-y-2">
           {checks.map((c, i) => {
             const isDone = i < idx;
             const isActive = i === idx && !allDone;
             const isFinalActive = i === idx && allDone && i === checks.length - 1;
             return (
-              <div key={c.label} className="flex items-start gap-3 py-2.5" style={{ opacity: i <= idx ? 1 : 0.4 }}>
+              <div key={c.label} className="flex items-start gap-3 py-3 px-3 rounded-lg transition-all duration-300" style={{ 
+                opacity: i <= idx ? 1 : 0.5,
+                background: i <= idx ? TOKENS.bgAlt : "transparent"
+              }}>
                 <div className="mt-0.5 shrink-0">
                   {isDone ? (
                     <CheckCircle2 size={18} style={{ color: TOKENS.success }} />
                   ) : isActive ? (
-                    <RefreshCw size={18} className="animate-spin" style={{ color: TOKENS.accentDark }} />
+                    <RefreshCw size={18} className="animate-spin" style={{ color: TOKENS.accent }} />
                   ) : isFinalActive ? (
-                    <Clock size={18} style={{ color: TOKENS.accentDark }} />
+                    <Clock size={18} style={{ color: TOKENS.accent }} />
                   ) : (
-                    <div className="w-[18px] h-[18px] rounded-full border-2" style={{ borderColor: TOKENS.line }} />
+                    <div className="w-[18px] h-[18px] rounded-full border-2" style={{ borderColor: TOKENS.lineSoft }} />
                   )}
                 </div>
-                <div>
-                  <div className="f-body text-sm font-medium" style={{ color: TOKENS.ink }}>{c.label}</div>
-                  <div className="f-body text-xs mt-0.5" style={{ color: TOKENS.muted }}>{c.detail}</div>
+                <div className="flex-1">
+                  <div className="f-body text-sm font-semibold" style={{ color: TOKENS.ink }}>{c.label}</div>
+                  <div className="f-body text-xs mt-1" style={{ color: TOKENS.muted }}>{c.detail}</div>
                 </div>
               </div>
             );
@@ -558,21 +619,24 @@ function DashboardScreen({ tier, goUpgrade }) {
     <div className="max-w-3xl">
       <ScreenHeader title="Welcome back" subtitle="Okafor Import & Trading Ltd" />
 
-      <Card className="mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="f-body text-sm font-semibold" style={{ color: TOKENS.ink }}>
-            {tier === "tier2" ? "Full verification" : "Tier 1 · Fast Start"}
-          </span>
-          <span className="f-body text-xs px-2 py-0.5 rounded-full" style={{ color: tier === "tier2" ? TOKENS.success : TOKENS.accentDark, background: tier === "tier2" ? TOKENS.successBg : TOKENS.bg }}>
-            {tier === "tier2" ? "Unlimited" : "₦650,000 of ₦1,000,000 used"}
+      <Card className="mb-6">
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <span className="f-body text-xs font-bold uppercase tracking-wider" style={{ color: TOKENS.accent, letterSpacing: "0.08em" }}>Account Status</span>
+            <span className="f-body text-lg font-bold block mt-1" style={{ color: TOKENS.ink }}>
+              {tier === "tier2" ? "Full verification" : "Tier 1 · Fast Start"}
+            </span>
+          </div>
+          <span className="f-body text-xs px-3 py-1.5 rounded-full font-semibold" style={{ color: tier === "tier2" ? TOKENS.successDark : TOKENS.accentDark, background: tier === "tier2" ? TOKENS.successBg : TOKENS.accentBg }}>
+            {tier === "tier2" ? "✓ Unlimited" : "₦650K / ₦1M"}
           </span>
         </div>
         {tier !== "tier2" && (
           <>
-            <div className="relative h-1.5 rounded-full mb-3" style={{ background: TOKENS.line }}>
-              <div className="absolute top-0 left-0 h-1.5 rounded-full" style={{ width: "65%", background: TOKENS.accent }} />
+            <div className="relative h-2 rounded-full mb-3 overflow-hidden" style={{ background: TOKENS.lineSoft }}>
+              <div className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500" style={{ width: "65%", background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
             </div>
-            <button onClick={goUpgrade} className="f-body text-xs font-semibold" style={{ color: TOKENS.accentDark }}>Upgrade to full verification →</button>
+            <button onClick={goUpgrade} className="f-body text-xs font-bold flex items-center gap-1 transition-colors hover:opacity-80" style={{ color: TOKENS.accentDark }}>Upgrade for unlimited access <span>→</span></button>
           </>
         )}
       </Card>
@@ -583,10 +647,10 @@ function DashboardScreen({ tier, goUpgrade }) {
           { label: "Avg. settlement", value: "6 min", sub: "vs. 3–5 days by bank" },
           { label: "Corridors used", value: "3", sub: "China · India · Turkey" },
         ].map((s) => (
-          <Card key={s.label}>
-            <div className="f-body text-xs font-medium uppercase tracking-wide mb-1" style={{ color: TOKENS.muted }}>{s.label}</div>
-            <div className="f-display font-bold text-2xl" style={{ color: TOKENS.ink }}>{s.value}</div>
-            <div className="f-body text-xs mt-1" style={{ color: TOKENS.muted }}>{s.sub}</div>
+          <Card key={s.label} className="hover:shadow-lg transition-all duration-200">
+            <div className="f-body text-xs font-bold uppercase tracking-wider mb-2" style={{ color: TOKENS.mutedLight, letterSpacing: "0.08em" }}>{s.label}</div>
+            <div className="f-display font-bold text-3xl leading-tight mb-2" style={{ color: TOKENS.ink }}>{s.value}</div>
+            <div className="f-body text-xs font-medium" style={{ color: TOKENS.muted }}>{s.sub}</div>
           </Card>
         ))}
       </div>
@@ -600,17 +664,22 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
     <div className="max-w-lg">
       <ScreenHeader eyebrow="New Payment · Step 1 of 3" title="Where's this payment going?" />
       <Card className="mb-5">
-        <div className="grid grid-cols-3 gap-2 mb-1">
+        <div className="grid grid-cols-3 gap-3">
           {Object.entries(CORRIDORS).map(([key, val]) => (
             <button
               key={key}
               onClick={() => setCorridor(key)}
-              className="rounded-xl border p-3 text-center f-body"
-              style={{ borderColor: corridor === key ? TOKENS.ink : TOKENS.line, borderWidth: corridor === key ? 2 : 1, background: corridor === key ? TOKENS.bg : TOKENS.surface }}
+              className="rounded-xl border-2 p-3.5 text-center f-body transition-all duration-200 hover:shadow-md active:scale-95"
+              style={{ 
+                borderColor: corridor === key ? TOKENS.accent : TOKENS.lineSoft, 
+                borderWidth: 2,
+                background: corridor === key ? TOKENS.accentBg : TOKENS.bgAlt,
+                boxShadow: corridor === key ? `0 0 0 4px ${TOKENS.accentBg}66` : "none"
+              }}
             >
-              <div className="text-xl mb-1">{val.flag}</div>
-              <div className="text-sm font-semibold" style={{ color: TOKENS.ink }}>{val.label}</div>
-              <div className="text-xs f-mono" style={{ color: TOKENS.muted }}>{val.coord}</div>
+              <div className="text-2xl mb-2">{val.flag}</div>
+              <div className="text-sm font-bold" style={{ color: TOKENS.ink }}>{val.label}</div>
+              <div className="text-xs f-mono mt-1" style={{ color: TOKENS.muted }}>{val.coord}</div>
             </button>
           ))}
         </div>
@@ -765,23 +834,23 @@ function ReviewScreen({ corridor, invoice, next, back }) {
     return (
       <div className="max-w-lg">
         <ScreenHeader eyebrow="New Payment · Final Step" title="Send this exact amount" subtitle="We'll detect your transfer automatically — no proof of payment needed." />
-        <Card className="mb-5">
-          <div className="flex justify-between items-center pb-4 mb-4 border-b" style={{ borderColor: TOKENS.line }}>
-            <div className="f-body text-sm" style={{ color: TOKENS.muted }}>Complete transfer within</div>
-            <div className="f-mono font-semibold text-lg" style={{ color: secs < 30 ? TOKENS.hold : TOKENS.ink }}>{mm}:{ss}</div>
+        <Card className="mb-6">
+          <div className="flex justify-between items-center pb-4 mb-5 border-b" style={{ borderColor: TOKENS.lineSoft }}>
+            <div className="f-body text-sm font-medium" style={{ color: TOKENS.muted }}>Complete transfer within</div>
+            <div className="f-mono font-bold text-xl" style={{ color: secs < 30 ? TOKENS.hold : TOKENS.accent, transition: "color 100ms" }}>{mm}:{ss}</div>
           </div>
-          <div className="text-center py-2 mb-4">
-            <div className="f-body text-xs uppercase tracking-wide font-semibold mb-1" style={{ color: TOKENS.muted }}>Amount to transfer</div>
-            <div className="f-display font-bold text-3xl" style={{ color: TOKENS.ink }}>₦{(amt + fee).toLocaleString()}</div>
+          <div className="text-center py-3 mb-6 px-3 rounded-lg" style={{ background: TOKENS.accentBg }}>
+            <div className="f-body text-xs uppercase tracking-wider font-bold mb-2" style={{ color: TOKENS.accentDark, letterSpacing: "0.08em" }}>Amount to transfer</div>
+            <div className="f-display font-bold text-4xl leading-tight" style={{ color: TOKENS.ink }}>₦{(amt + fee).toLocaleString()}</div>
           </div>
-          <div className="rounded-xl p-4 mb-3" style={{ background: TOKENS.bg }}>
-            <div className="flex justify-between items-center mb-3">
+          <div className="rounded-xl p-5 mb-4 border-2" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
+            <div className="flex justify-between items-center mb-4">
               <div>
-                <div className="f-body text-[10px] uppercase tracking-wide font-semibold mb-0.5" style={{ color: TOKENS.muted }}>Account number</div>
-                <div className="f-mono text-base font-semibold" style={{ color: TOKENS.ink }}>{acctNumber}</div>
+                <div className="f-body text-[10px] uppercase tracking-wider font-bold mb-1" style={{ color: TOKENS.mutedLight, letterSpacing: "0.08em" }}>Account number</div>
+                <div className="f-mono text-lg font-bold" style={{ color: TOKENS.ink }}>{acctNumber}</div>
               </div>
-              <button onClick={copyAcct} className="f-body text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: copied ? TOKENS.successBg : TOKENS.surface, color: copied ? TOKENS.success : TOKENS.accentDark, border: `1px solid ${copied ? TOKENS.success : TOKENS.line}` }}>
-                {copied ? "Copied" : "Copy"}
+              <button onClick={copyAcct} className="f-body text-xs font-bold px-4 py-2 rounded-lg transition-all active:scale-95" style={{ background: copied ? TOKENS.success : TOKENS.accent, color: "#fff" }}>
+                {copied ? "✓ Copied" : "Copy"}
               </button>
             </div>
             <div className="flex justify-between text-sm mb-2">
@@ -886,42 +955,49 @@ function TrackerScreen({ corridor, goHome, goDetail }) {
     <div className="max-w-lg">
       <ScreenHeader eyebrow="Payment TXN-00219" title={`Lagos → ${c.city}`} subtitle={`${c.coord} corridor`} />
       <Card>
-        <div className="flex items-center justify-between mb-2">
-          <span className="f-body text-xs font-semibold uppercase tracking-wide" style={{ color: settled ? TOKENS.success : TOKENS.accentDark }}>
-            {settled ? "Settled" : "In progress"}
+        <div className="flex items-center justify-between mb-4">
+          <span className="f-body text-xs font-bold uppercase tracking-wider" style={{ color: settled ? TOKENS.success : TOKENS.accent, letterSpacing: "0.08em" }}>
+            {settled ? "✓ Settled" : "In progress"}
           </span>
-          <span className="f-mono text-xs" style={{ color: TOKENS.muted }}>{mm}:{ss} elapsed</span>
+          <span className="f-mono text-xs font-semibold" style={{ color: TOKENS.muted }}>{mm}:{ss} elapsed</span>
         </div>
 
-        <div className="relative mb-6 mt-3">
-          <div className="absolute top-2.5 left-0 right-0 h-[2px]" style={{ background: TOKENS.line }} />
-          <div className="absolute top-2.5 left-0 h-[2px] transition-all duration-700" style={{ width: `${(idx / (steps.length - 1)) * 100}%`, background: TOKENS.accent }} />
+        <div className="relative mb-8 mt-4">
+          <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
+          <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${(idx / (steps.length - 1)) * 100}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
           <div className="flex justify-between relative">
             {steps.map((s, i) => (
               <div key={s.label} className="flex flex-col items-center" style={{ width: 56 }}>
-                <div className="w-[10px] h-[10px] rounded-full mb-2" style={{ background: i <= idx ? TOKENS.accent : TOKENS.line, boxShadow: i === idx ? `0 0 0 4px ${TOKENS.bg}` : "none" }} />
-                <span className="f-body text-[10px] text-center leading-tight" style={{ color: i <= idx ? TOKENS.ink : TOKENS.muted, fontWeight: i === idx ? 600 : 400 }}>{s.label}</span>
+                <div className="w-3 h-3 rounded-full mb-3 transition-all duration-500" style={{ 
+                  background: i <= idx ? TOKENS.accent : TOKENS.surface,
+                  border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
+                  boxShadow: i === idx ? `0 0 0 4px ${TOKENS.accentBg}` : "none"
+                }} />
+                <span className="f-body text-[10px] text-center leading-tight font-medium" style={{ color: i <= idx ? TOKENS.ink : TOKENS.muted, fontWeight: i === idx ? 700 : 500 }}>{s.label}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="space-y-0.5 mb-1">
+        <div className="space-y-2 mb-2">
           {steps.map((s, i) => {
             const isActive = i === idx && !settled;
             if (i > idx) return null;
             return (
-              <div key={s.label} className="flex items-start gap-3 py-2">
+              <div key={s.label} className="flex items-start gap-3 py-3 px-3 rounded-lg transition-all duration-300" style={{ 
+                background: i <= idx ? TOKENS.bgAlt : "transparent",
+                opacity: i <= idx ? 1 : 0.5
+              }}>
                 <div className="mt-0.5 shrink-0">
                   {isActive ? (
-                    <RefreshCw size={16} className="animate-spin" style={{ color: TOKENS.accentDark }} />
+                    <RefreshCw size={16} className="animate-spin" style={{ color: TOKENS.accent }} />
                   ) : (
                     <CheckCircle2 size={16} style={{ color: TOKENS.success }} />
                   )}
                 </div>
-                <div>
-                  <div className="f-body text-sm font-medium" style={{ color: TOKENS.ink }}>{s.label}</div>
-                  <div className="f-body text-xs mt-0.5" style={{ color: TOKENS.muted }}>{s.detail}</div>
+                <div className="flex-1">
+                  <div className="f-body text-sm font-semibold" style={{ color: TOKENS.ink }}>{s.label}</div>
+                  <div className="f-body text-xs mt-1 font-medium" style={{ color: TOKENS.muted }}>{s.detail}</div>
                 </div>
               </div>
             );
@@ -929,20 +1005,20 @@ function TrackerScreen({ corridor, goHome, goDetail }) {
         </div>
 
         {settled && (
-          <div className="mt-4 pt-5 border-t" style={{ borderColor: TOKENS.line }}>
-            <div className="flex items-start gap-2.5 mb-4">
-              <CheckCircle2 size={18} style={{ color: TOKENS.success }} className="mt-0.5 shrink-0" />
-              <div className="f-body text-sm" style={{ color: TOKENS.ink }}>
-                Settled in {mm}m {ss}s — well within the estimate. Share the reference below with your supplier so they can match it to your invoice.
+          <div className="mt-6 pt-6 border-t" style={{ borderColor: TOKENS.lineSoft }}>
+            <div className="flex items-start gap-3 mb-5 p-3 rounded-lg" style={{ background: TOKENS.successBg }}>
+              <CheckCircle2 size={20} style={{ color: TOKENS.success }} className="mt-0.5 shrink-0 flex-shrink-0" />
+              <div className="f-body text-sm font-medium" style={{ color: TOKENS.ink }}>
+                Settled in {mm}m {ss}s — well within the estimate. Share the reference below with your supplier.
               </div>
             </div>
-            <div className="flex items-center justify-between px-4 py-3 rounded-xl mb-4" style={{ background: TOKENS.bg }}>
+            <div className="flex items-center justify-between px-4 py-4 rounded-xl mb-4 border-2" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
               <div>
-                <div className="f-body text-[10px] uppercase tracking-wide font-semibold mb-0.5" style={{ color: TOKENS.muted }}>Supplier reference</div>
-                <div className="f-mono text-sm font-semibold" style={{ color: TOKENS.ink }}>{ref}</div>
+                <div className="f-body text-[10px] uppercase tracking-wider font-bold mb-1" style={{ color: TOKENS.mutedLight, letterSpacing: "0.08em" }}>Supplier Reference</div>
+                <div className="f-mono text-base font-bold" style={{ color: TOKENS.ink }}>{ref}</div>
               </div>
-              <button onClick={copyRef} className="f-body text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: copied ? TOKENS.successBg : TOKENS.surface, color: copied ? TOKENS.success : TOKENS.accentDark, border: `1px solid ${copied ? TOKENS.success : TOKENS.line}` }}>
-                {copied ? "Copied" : "Copy"}
+              <button onClick={copyRef} className="f-body text-xs font-bold px-4 py-2 rounded-lg transition-all active:scale-95" style={{ background: copied ? TOKENS.success : TOKENS.accent, color: "#fff" }}>
+                {copied ? "✓ Copied" : "Copy"}
               </button>
             </div>
             <div className="flex flex-col gap-2.5">
@@ -962,21 +1038,21 @@ function HeldScreen() {
     <div className="max-w-lg">
       <ScreenHeader eyebrow="Payment TXN-00220" title="Under review" />
       <Card>
-        <div className="flex items-start gap-3 mb-5">
-          <ShieldAlert size={22} style={{ color: TOKENS.accentDark }} className="mt-0.5" />
-          <div>
-            <div className="f-body font-semibold" style={{ color: TOKENS.ink }}>We're double-checking this payment</div>
-            <div className="f-body text-sm mt-1" style={{ color: TOKENS.muted }}>
+        <div className="flex items-start gap-3 mb-6 p-4 rounded-lg" style={{ background: TOKENS.accentBg }}>
+          <ShieldAlert size={24} style={{ color: TOKENS.accentDark }} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="f-body font-bold" style={{ color: TOKENS.ink }}>We're double-checking this payment</div>
+            <div className="f-body text-sm mt-1.5 font-medium" style={{ color: TOKENS.muted }}>
               This is routine for new suppliers. Your funds are safe and this payment has not been charged yet.
             </div>
           </div>
         </div>
-        <div className="rounded-lg p-4 mb-4" style={{ background: TOKENS.bg }}>
-          <div className="flex justify-between f-body text-sm mb-2"><span style={{ color: TOKENS.muted }}>Status</span><span style={{ color: TOKENS.ink, fontWeight: 600 }}>Pending review</span></div>
-          <div className="flex justify-between f-body text-sm mb-2"><span style={{ color: TOKENS.muted }}>Reason</span><span style={{ color: TOKENS.ink }}>New supplier verification</span></div>
-          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted }}>Expected update by</span><span className="f-mono" style={{ color: TOKENS.ink }}>within 24h</span></div>
+        <div className="rounded-lg p-5 mb-5 border-2" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
+          <div className="flex justify-between f-body text-sm mb-3"><span style={{ color: TOKENS.muted, fontWeight: 500 }}>Status</span><span style={{ color: TOKENS.ink, fontWeight: 700 }}>Pending review</span></div>
+          <div className="flex justify-between f-body text-sm mb-3"><span style={{ color: TOKENS.muted, fontWeight: 500 }}>Reason</span><span style={{ color: TOKENS.ink, fontWeight: 600 }}>New supplier verification</span></div>
+          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted, fontWeight: 500 }}>Expected update by</span><span className="f-mono font-semibold" style={{ color: TOKENS.accent }}>within 24h</span></div>
         </div>
-        <div className="f-body text-xs" style={{ color: TOKENS.muted }}>We'll notify you the moment this is resolved — no action needed from you right now.</div>
+        <div className="f-body text-xs font-medium leading-relaxed" style={{ color: TOKENS.muted }}>We'll notify you the moment this is resolved — no action needed from you right now.</div>
       </Card>
     </div>
   );
@@ -987,18 +1063,19 @@ function ExpiredScreen({ retry }) {
     <div className="max-w-lg">
       <ScreenHeader eyebrow="Payment TXN-00221" title="Your rate has expired" />
       <Card>
-        <div className="flex items-start gap-3 mb-5">
-          <Clock size={22} style={{ color: TOKENS.hold }} className="mt-0.5" />
-          <div>
-            <div className="f-body font-semibold" style={{ color: TOKENS.ink }}>The locked rate timed out</div>
-            <div className="f-body text-sm mt-1" style={{ color: TOKENS.muted }}>
+        <div className="flex items-start gap-3 mb-6 p-4 rounded-lg" style={{ background: TOKENS.holdBg }}>
+          <Clock size={24} style={{ color: TOKENS.hold }} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="f-body font-bold" style={{ color: TOKENS.ink }}>The locked rate timed out</div>
+            <div className="f-body text-sm mt-1.5 font-medium" style={{ color: TOKENS.muted }}>
               We never move your money on a stale rate. Here's the current one — confirm to continue.
             </div>
           </div>
         </div>
-        <div className="rounded-lg p-4 mb-5" style={{ background: TOKENS.bg }}>
-          <div className="flex justify-between f-body text-sm mb-1"><span style={{ color: TOKENS.muted }}>Old rate</span><span className="f-mono line-through" style={{ color: TOKENS.muted }}>1 NGN = 0.00087 CNY</span></div>
-          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted }}>New rate</span><span className="f-mono font-semibold" style={{ color: TOKENS.ink }}>1 NGN = 0.00089 CNY</span></div>
+        <div className="rounded-lg p-5 mb-6 border-2 space-y-3" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
+          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted, fontWeight: 500 }}>Old rate</span><span className="f-mono line-through" style={{ color: TOKENS.muted }}>1 NGN = 0.00087 CNY</span></div>
+          <div className="h-px" style={{ background: TOKENS.lineSoft }} />
+          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted, fontWeight: 500 }}>New rate</span><span className="f-mono font-bold" style={{ color: TOKENS.accent }}>1 NGN = 0.00089 CNY</span></div>
         </div>
         <PrimaryButton onClick={retry} icon={RefreshCw}>Reconfirm at new rate</PrimaryButton>
       </Card>
@@ -1011,17 +1088,20 @@ function RejectedScreen({ retry }) {
     <div className="max-w-lg">
       <ScreenHeader eyebrow="Payment TXN-00222" title="This payment didn't go through" />
       <Card>
-        <div className="flex items-start gap-3 mb-5">
-          <AlertTriangle size={22} style={{ color: TOKENS.hold }} className="mt-0.5" />
-          <div>
-            <div className="f-body font-semibold" style={{ color: TOKENS.ink }}>Delivery failed</div>
-            <div className="f-body text-sm mt-1" style={{ color: TOKENS.muted }}>
+        <div className="flex items-start gap-3 mb-6 p-4 rounded-lg" style={{ background: TOKENS.holdBg }}>
+          <AlertTriangle size={24} style={{ color: TOKENS.hold }} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="f-body font-bold" style={{ color: TOKENS.ink }}>Delivery failed</div>
+            <div className="f-body text-sm mt-1.5 font-medium" style={{ color: TOKENS.muted }}>
               The receiving bank rejected the transfer — the account details don't match their records.
             </div>
           </div>
         </div>
-        <div className="rounded-lg p-4 mb-5 f-body text-sm" style={{ background: TOKENS.holdBg, color: TOKENS.ink }}>
-          Your ₦450,000 has been returned to your balance in full. No fees were charged.
+        <div className="rounded-lg p-5 mb-6 f-body text-sm font-medium border-2" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft, color: TOKENS.ink }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "18px" }}>✓</span>
+            <span>Your ₦450,000 has been returned to your balance in full. No fees were charged.</span>
+          </div>
         </div>
         <PrimaryButton onClick={retry} icon={RefreshCw}>Retry with corrected details</PrimaryButton>
       </Card>
@@ -1034,21 +1114,32 @@ function LimitReachedScreen({ upgrade, back }) {
     <div className="max-w-lg">
       <ScreenHeader eyebrow="New Payment · Tier 1 limit" title="This would take you over your monthly limit" />
       <Card>
-        <div className="flex items-start gap-3 mb-5">
-          <ShieldAlert size={22} style={{ color: TOKENS.accentDark }} className="mt-0.5" />
-          <div>
-            <div className="f-body font-semibold" style={{ color: TOKENS.ink }}>Tier 1 limit reached</div>
-            <div className="f-body text-sm mt-1" style={{ color: TOKENS.muted }}>
+        <div className="flex items-start gap-3 mb-6 p-4 rounded-lg" style={{ background: TOKENS.accentBg }}>
+          <ShieldAlert size={24} style={{ color: TOKENS.accentDark }} className="mt-0.5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="f-body font-bold" style={{ color: TOKENS.ink }}>Tier 1 limit reached</div>
+            <div className="f-body text-sm mt-1.5 font-medium" style={{ color: TOKENS.muted }}>
               Tier 1 accounts can send up to ₦1,000,000 per month across all corridors combined. This payment would put you over that limit.
             </div>
           </div>
         </div>
-        <div className="rounded-lg p-4 mb-5" style={{ background: TOKENS.bg }}>
-          <div className="flex justify-between f-body text-sm mb-2"><span style={{ color: TOKENS.muted }}>Used this month</span><span style={{ color: TOKENS.ink, fontWeight: 600 }}>₦850,000</span></div>
-          <div className="flex justify-between f-body text-sm mb-2"><span style={{ color: TOKENS.muted }}>This payment</span><span style={{ color: TOKENS.ink, fontWeight: 600 }}>₦300,000</span></div>
-          <div className="flex justify-between f-body text-sm"><span style={{ color: TOKENS.muted }}>Monthly limit</span><span className="f-mono" style={{ color: TOKENS.ink }}>₦1,000,000</span></div>
+        <div className="rounded-lg p-5 mb-6 border-2 space-y-3" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
+          <div className="flex justify-between f-body text-sm">
+            <span style={{ color: TOKENS.muted, fontWeight: 500 }}>Used this month</span>
+            <span style={{ color: TOKENS.ink, fontWeight: 700 }}>₦850,000</span>
+          </div>
+          <div className="h-px" style={{ background: TOKENS.lineSoft }} />
+          <div className="flex justify-between f-body text-sm">
+            <span style={{ color: TOKENS.muted, fontWeight: 500 }}>This payment</span>
+            <span style={{ color: TOKENS.ink, fontWeight: 700 }}>₦300,000</span>
+          </div>
+          <div className="h-px" style={{ background: TOKENS.lineSoft }} />
+          <div className="flex justify-between f-body text-sm">
+            <span style={{ color: TOKENS.muted, fontWeight: 500 }}>Monthly limit</span>
+            <span className="f-mono font-bold" style={{ color: TOKENS.accent }}>₦1,000,000</span>
+          </div>
         </div>
-        <div className="f-body text-xs mb-5" style={{ color: TOKENS.muted }}>
+        <div className="f-body text-xs mb-6 font-medium leading-relaxed" style={{ color: TOKENS.muted }}>
           Complete full verification to remove this limit — no need to wait for it to reset next month.
         </div>
         <div className="flex flex-col gap-2.5">
