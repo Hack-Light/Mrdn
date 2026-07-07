@@ -6,44 +6,49 @@ import {
 } from "lucide-react";
 
 const TOKENS = {
-  // Primary - Deep Navy with refined depth
-  ink: "#0F1B2D",
-  inkDark: "#081016",
-  inkLight: "#1A2A3F",
+  // Primary - Teal
+  ink: "#0F172A",
+  inkDark: "#050B15",
+  inkLight: "#1E293B",
   
   // Neutrals - Enhanced grays with better contrast
-  bg: "#F8FAFC",
-  bgAlt: "#F1F5F9",
+  bg: "#F5F7FA",
+  bgAlt: "#EEF2F7",
   surface: "#FFFFFF",
-  line: "#E0E7F1",
-  lineSoft: "#EDF0F7",
+  line: "#D4DAEF",
+  lineSoft: "#E2E8F0",
   muted: "#64748B",
   mutedLight: "#94A3B8",
   
-  // Primary Accent - Refined Gold
-  accent: "#D4A037",
-  accentDark: "#B88A28",
-  accentLight: "#E8C660",
-  accentBg: "#FEF6E8",
+  // Primary Accent - Vibrant Teal
+  accent: "#0891B2",
+  accentDark: "#0E7490",
+  accentLight: "#06B6D4",
+  accentBg: "#E0F2FE",
   
-  // Secondary Accent - Emerald
-  secondary: "#0D9488",
-  secondaryLight: "#14B8A6",
-  secondaryBg: "#F0FDF9",
+  // Secondary Accent - Purple
+  secondary: "#8B5CF6",
+  secondaryLight: "#A78BFA",
+  secondaryBg: "#F3E8FF",
+  
+  // Tertiary - Green (for success)
+  tertiary: "#10B981",
+  tertiaryLight: "#34D399",
+  tertiaryBg: "#D1FAE5",
   
   // Functional colors
-  success: "#16A34A",
-  successBg: "#ECFDF5",
-  successDark: "#15803D",
+  success: "#10B981",
+  successBg: "#D1FAE5",
+  successDark: "#059669",
   
-  hold: "#DC2626",
-  holdBg: "#FEF2F2",
+  hold: "#F97316",
+  holdBg: "#FED7AA",
   
   // Shadows and overlays
-  shadowXs: "rgba(15, 27, 45, 0.04)",
-  shadowSm: "rgba(15, 27, 45, 0.08)",
-  shadowMd: "rgba(15, 27, 45, 0.12)",
-  shadowLg: "rgba(15, 27, 45, 0.16)",
+  shadowXs: "rgba(15, 23, 42, 0.04)",
+  shadowSm: "rgba(15, 23, 42, 0.08)",
+  shadowMd: "rgba(15, 23, 42, 0.12)",
+  shadowLg: "rgba(15, 23, 42, 0.16)",
   overlay: "rgba(0, 0, 0, 0.4)",
 };
 
@@ -201,11 +206,11 @@ function PrimaryButton({ children, onClick, icon: Icon = ArrowRight, disabled })
     <button
       onClick={onClick}
       disabled={disabled}
-      className="f-body font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto transition-all duration-200 active:scale-95 disabled:opacity-60"
+      className="f-body font-semibold px-5 py-3.5 rounded-xl flex items-center justify-center gap-2 w-full transition-all duration-200 active:scale-95 disabled:opacity-60"
       style={{ 
-        background: disabled ? TOKENS.lineSoft : TOKENS.ink, 
+        background: disabled ? TOKENS.lineSoft : TOKENS.accent, 
         color: disabled ? TOKENS.mutedLight : "#fff", 
-        boxShadow: disabled ? "none" : `0 2px 8px ${TOKENS.shadowMd}`,
+        boxShadow: disabled ? "none" : `0 4px 12px ${TOKENS.shadowMd}`,
         cursor: disabled ? "not-allowed" : "pointer"
       }}
     >
@@ -216,9 +221,17 @@ function PrimaryButton({ children, onClick, icon: Icon = ArrowRight, disabled })
 
 function GhostButton({ children, onClick, icon: Icon = ArrowLeft }) {
   return (
-    <button onClick={onClick} className="f-body font-medium px-5 py-3 rounded-xl flex items-center justify-center gap-2 border w-full sm:w-auto transition-all duration-200 active:scale-95 hover:bg-opacity-50" style={{ borderColor: TOKENS.lineSoft, color: TOKENS.ink, background: `${TOKENS.bg}66` }}>
+    <button onClick={onClick} className="f-body font-medium px-5 py-3.5 rounded-xl flex items-center justify-center gap-2 border w-full transition-all duration-200 active:scale-95 hover:bg-opacity-50" style={{ borderColor: TOKENS.lineSoft, color: TOKENS.ink, background: `${TOKENS.bgAlt}` }}>
       <Icon size={16} /> {children}
     </button>
+  );
+}
+
+function ButtonGroup({ children }) {
+  return (
+    <div className="flex flex-col sm:flex-row gap-3 w-full">
+      {children}
+    </div>
   );
 }
 
@@ -262,17 +275,30 @@ function ScreenHeader({ eyebrow, title, subtitle }) {
 
 function StepProgress({ step, total }) {
   return (
-    <div className="relative mb-8 mt-2">
-      <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
-      <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${(step / (total - 1)) * 100}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
-      <div className="flex justify-between relative">
+    <div className="relative mb-8 mt-4">
+      <div className="flex items-center justify-between gap-2">
         {Array.from({ length: total }).map((_, i) => (
-          <div key={i} className="w-2.5 h-2.5 rounded-full transition-all duration-500 ring-2 ring-offset-2" style={{ 
-            background: i <= step ? TOKENS.accent : TOKENS.surface,
-            borderColor: i <= step ? TOKENS.accent : TOKENS.line,
-            border: i <= step ? "2px solid " + TOKENS.accent : `2px solid ${TOKENS.lineSoft}`,
-            ringColor: i === step ? TOKENS.accentBg : "transparent"
-          }} />
+          <div key={i} className="flex-1 flex items-center gap-2">
+            <div 
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500"
+              style={{
+                background: i <= step ? TOKENS.accent : TOKENS.bgAlt,
+                color: i <= step ? "#fff" : TOKENS.muted,
+                border: `2px solid ${i <= step ? TOKENS.accent : TOKENS.lineSoft}`,
+                boxShadow: i === step ? `0 0 0 4px ${TOKENS.accentBg}` : "none"
+              }}
+            >
+              {i <= step ? "✓" : i + 1}
+            </div>
+            {i < total - 1 && (
+              <div 
+                className="flex-1 h-1 rounded-full transition-all duration-500"
+                style={{
+                  background: i < step ? TOKENS.accent : TOKENS.lineSoft
+                }}
+              />
+            )}
+          </div>
         ))}
       </div>
     </div>
@@ -351,15 +377,29 @@ function VerificationWaiting({ onDone }) {
           <span className="f-mono text-xs" style={{ color: TOKENS.muted }}>usually 2–5 min</span>
         </div>
         <div className="relative mb-8 mt-4">
-          <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
-          <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${donePct}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
-          <div className="flex justify-between relative">
+          <div className="flex items-center justify-between gap-2">
             {checks.map((_, i) => (
-              <div key={i} className="w-2.5 h-2.5 rounded-full transition-all duration-500" style={{ 
-                background: i <= idx ? TOKENS.accent : TOKENS.surface,
-                border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
-                boxShadow: i === idx ? `0 0 0 3px ${TOKENS.accentBg}` : "none"
-              }} />
+              <div key={i} className="flex-1 flex items-center gap-2">
+                <div 
+                  className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-500"
+                  style={{
+                    background: i <= idx ? TOKENS.accent : TOKENS.bgAlt,
+                    color: i <= idx ? "#fff" : TOKENS.muted,
+                    border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
+                    boxShadow: i === idx ? `0 0 0 4px ${TOKENS.accentBg}` : "none"
+                  }}
+                >
+                  {i <= idx ? "✓" : i + 1}
+                </div>
+                {i < checks.length - 1 && (
+                  <div 
+                    className="flex-1 h-1 rounded-full transition-all duration-500"
+                    style={{
+                      background: i < idx ? TOKENS.accent : TOKENS.lineSoft
+                    }}
+                  />
+                )}
+              </div>
             ))}
           </div>
         </div>
@@ -483,7 +523,7 @@ function OnboardingFlow({ next }) {
             <div className="f-body text-xs mb-1 px-3 py-2.5 rounded-lg" style={{ background: TOKENS.bg, color: TOKENS.muted }}>
               We validate your CAC number against the public registry - no certificate upload needed at this tier.
             </div>
-            <div className="flex gap-3 mt-4"><GhostButton onClick={() => setStep(0)}>Back</GhostButton><PrimaryButton onClick={() => setStep(2)}>Continue</PrimaryButton></div>
+            <ButtonGroup><GhostButton onClick={() => setStep(0)}>Back</GhostButton><PrimaryButton onClick={() => setStep(2)}>Continue</PrimaryButton></ButtonGroup>
           </Card>
         )}
 
@@ -494,7 +534,7 @@ function OnboardingFlow({ next }) {
             </p>
             <Field label="Your full name" value="" onChange={() => {}} placeholder="As shown on government ID" />
             <Field label="BVN" value="•••••••••1029" onChange={() => {}} mono />
-            <div className="flex gap-3 mt-2"><GhostButton onClick={() => setStep(1)}>Back</GhostButton><PrimaryButton onClick={() => setStep(3)}>Continue</PrimaryButton></div>
+            <ButtonGroup><GhostButton onClick={() => setStep(1)}>Back</GhostButton><PrimaryButton onClick={() => setStep(3)}>Continue</PrimaryButton></ButtonGroup>
           </Card>
         )}
 
@@ -507,8 +547,10 @@ function OnboardingFlow({ next }) {
               I consent to Mrdn collecting and processing my business and personal data in line with the Nigeria Data Protection Act (NDPA), for the purposes of verification, screening, and payment processing.
             </Checkbox>
             <div className="flex gap-3 mt-2">
-              <GhostButton onClick={() => setStep(2)}>Back</GhostButton>
-              <PrimaryButton onClick={() => setStage("submitted")} disabled={!consent.terms || !consent.data} icon={CheckCircle2}>Submit for verification</PrimaryButton>
+      <ButtonGroup>
+        <GhostButton onClick={() => setStep(2)}>Back</GhostButton>
+        <PrimaryButton onClick={() => setStage("submitted")} disabled={!consent.terms || !consent.data} icon={CheckCircle2}>Submit for verification</PrimaryButton>
+      </ButtonGroup>
             </div>
           </Card>
         )}
@@ -562,7 +604,7 @@ function Tier2UpgradeFlow({ next, back }) {
           <Upload label="CAC Certificate of Incorporation" fileName={docs.cac} onChange={(name) => setDocs({ ...docs, cac: name })} />
           <Upload label="Status Report (Form CAC 7)" fileName={docs.statusReport} onChange={(name) => setDocs({ ...docs, statusReport: name })} />
           <Upload label="Proof of Address (utility bill)" fileName={docs.address} onChange={(name) => setDocs({ ...docs, address: name })} />
-          <div className="flex gap-3 mt-2"><GhostButton onClick={back}>Cancel</GhostButton><PrimaryButton onClick={() => setStep(1)} disabled={!tin || !docs.cac || !docs.statusReport || !docs.address}>Continue</PrimaryButton></div>
+          <ButtonGroup><GhostButton onClick={back}>Cancel</GhostButton><PrimaryButton onClick={() => setStep(1)} disabled={!tin || !docs.cac || !docs.statusReport || !docs.address}>Continue</PrimaryButton></ButtonGroup>
         </Card>
       )}
 
@@ -607,7 +649,7 @@ function Tier2UpgradeFlow({ next, back }) {
               <Upload label="Upload government ID" fileName={d.idDoc} onChange={(name) => updateDirector(d.id, "idDoc", name)} />
             </div>
           ))}
-          <div className="flex gap-3 mt-4"><GhostButton onClick={() => setStep(0)}>Back</GhostButton><PrimaryButton onClick={() => setStep(2)} disabled={!primaryIdDoc || directors.some((d) => !d.idDoc)}>Submit for verification</PrimaryButton></div>
+          <ButtonGroup><GhostButton onClick={() => setStep(0)}>Back</GhostButton><PrimaryButton onClick={() => setStep(2)} disabled={!primaryIdDoc || directors.some((d) => !d.idDoc)}>Submit for verification</PrimaryButton></ButtonGroup>
         </Card>
       )}
     </div>
@@ -641,7 +683,7 @@ function DashboardScreen({ tier, goUpgrade }) {
         )}
       </Card>
 
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
           { label: "This month", value: "₦650K", sub: "across 2 payments" },
           { label: "Avg. settlement", value: "6 min", sub: "vs. 3–5 days by bank" },
@@ -720,164 +762,10 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
         </div>
       </Card>
 
-      <div className="flex gap-3 mt-6">
+      <ButtonGroup>
         <GhostButton onClick={back}>Back</GhostButton>
         <PrimaryButton onClick={next}>Continue</PrimaryButton>
-      </div>
-    </div>
-  );
-}
-
-function ConfirmBeneficiaryScreen({ corridor, next, back }) {
-  const [flagged, setFlagged] = useState(false);
-  const isIndia = corridor === "india";
-  const maskedName = isIndia ? "r***** s*********" : "ÖS*** ÇO***";
-  const sourceCopy = isIndia
-    ? "UPI returns the account holder's name for confirmation before a transfer. For privacy, part of the name is masked."
-    : "Turkish banks return the account holder's name for confirmation before a transfer. For privacy, part of the name is masked.";
-  const fixCopy = isIndia
-    ? "Good catch. Go back and double-check the UPI VPA with your supplier before continuing — a small typo is the most common cause of a mismatch."
-    : "Good catch. Go back and double-check the IBAN with your supplier before continuing — a small typo is the most common cause of a mismatch.";
-  return (
-    <div className="max-w-lg">
-      <ScreenHeader eyebrow="New Payment · Beneficiary Check" title="Confirm your supplier's account" subtitle="We checked this account with the bank before you send anything." />
-      <Card className="mb-5">
-        <div className="flex items-start gap-3 mb-5">
-          <ShieldAlert size={20} style={{ color: TOKENS.accentDark }} className="mt-0.5" />
-          <div className="f-body text-sm" style={{ color: TOKENS.muted }}>
-            {sourceCopy}
-          </div>
-        </div>
-        <div className="rounded-xl p-4 mb-4 text-center" style={{ background: TOKENS.bg }}>
-          <div className="f-body text-[10px] uppercase tracking-wide font-semibold mb-1.5" style={{ color: TOKENS.muted }}>Account holder on file</div>
-          <div className="f-mono font-semibold text-lg" style={{ color: TOKENS.ink }}>{maskedName}</div>
-        </div>
-        <p className="f-body text-sm mb-1" style={{ color: TOKENS.ink }}>Does this match your supplier's name?</p>
-      </Card>
-      {!flagged ? (
-        <div className="flex flex-col gap-2.5">
-          <PrimaryButton onClick={next} icon={CheckCircle2}>Yes, this matches</PrimaryButton>
-          <GhostButton onClick={() => setFlagged(true)} icon={AlertTriangle}>This doesn't look right</GhostButton>
-        </div>
-      ) : (
-        <Card>
-          <div className="flex items-start gap-3 mb-4">
-            <AlertTriangle size={20} style={{ color: TOKENS.hold }} className="mt-0.5" />
-            <div className="f-body text-sm" style={{ color: TOKENS.ink }}>
-              {fixCopy}
-            </div>
-          </div>
-          <PrimaryButton onClick={back} icon={ArrowLeft}>Back to supplier details</PrimaryButton>
-        </Card>
-      )}
-    </div>
-  );
-}
-
-function InvoiceScreen({ invoice, setInvoice, corridor, next, back }) {
-  const categories = ["Electronics / components", "Textiles / finished goods", "Machinery parts", "Raw materials", "Other"];
-  return (
-    <div className="max-w-lg">
-      <ScreenHeader eyebrow="New Payment · Step 2 of 3" title="Invoice details" />
-      <Card>
-        <Field label="Invoice reference" value={invoice.ref} onChange={(v) => setInvoice({ ...invoice, ref: v })} mono placeholder="INV-3391" />
-        <Field label="Amount (₦)" value={invoice.amount} onChange={(v) => setInvoice({ ...invoice, amount: v })} placeholder="450,000" />
-        <label className="block mb-2">
-          <span className="f-body text-sm font-medium block mb-1.5" style={{ color: TOKENS.ink }}>Invoice category</span>
-          <div className="relative">
-            <select value={invoice.category} onChange={(e) => setInvoice({ ...invoice, category: e.target.value })} className="w-full px-3.5 py-2.5 rounded-lg border outline-none f-body appearance-none" style={{ borderColor: TOKENS.line, color: TOKENS.ink }}>
-              {categories.map((c) => <option key={c}>{c}</option>)}
-            </select>
-            <ChevronDown size={16} className="absolute right-3 top-3" style={{ color: TOKENS.muted }} />
-          </div>
-        </label>
-        {corridor === "india" && (
-          <div className="f-body text-xs flex items-start gap-2 mt-3 p-3 rounded-lg" style={{ background: TOKENS.bg, color: TOKENS.muted }}>
-            <FileText size={14} className="mt-0.5 shrink-0" />
-            <span>We'll auto-select the correct RBI purpose code from your invoice category — you won't need to enter one manually.</span>
-          </div>
-        )}
-      </Card>
-      <div className="flex gap-3 mt-6">
-        <GhostButton onClick={back}>Back</GhostButton>
-        <PrimaryButton onClick={next}>Continue</PrimaryButton>
-      </div>
-    </div>
-  );
-}
-
-function ReviewScreen({ corridor, invoice, next, back }) {
-  const c = CORRIDORS[corridor];
-  const [stage, setStage] = useState("review"); // review | transfer
-  const [secs, setSecs] = useState(298);
-  const [copied, setCopied] = useState(false);
-  useEffect(() => {
-    const t = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const mm = String(Math.floor(secs / 60)).padStart(2, "0");
-  const ss = String(secs % 60).padStart(2, "0");
-  const amt = Number((invoice.amount || "450000").replace(/,/g, "")) || 450000;
-  const fee = Math.round(amt * 0.03);
-  const rate = { china: 0.00087, india: 0.043, turkey: 1.21 }[corridor];
-  const converted = (amt * rate).toLocaleString(undefined, { maximumFractionDigits: 2 });
-  const acctNumber = "8823401197";
-  const ref = invoice.ref || "INV-3391";
-
-  const copyAcct = () => {
-    if (navigator.clipboard) navigator.clipboard.writeText(acctNumber).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
-
-  if (stage === "transfer") {
-    return (
-      <div className="max-w-lg">
-        <ScreenHeader eyebrow="New Payment · Final Step" title="Send this exact amount" subtitle="We'll detect your transfer automatically — no proof of payment needed." />
-        <Card className="mb-6">
-          <div className="flex justify-between items-center pb-4 mb-5 border-b" style={{ borderColor: TOKENS.lineSoft }}>
-            <div className="f-body text-sm font-medium" style={{ color: TOKENS.muted }}>Complete transfer within</div>
-            <div className="f-mono font-bold text-xl" style={{ color: secs < 30 ? TOKENS.hold : TOKENS.accent, transition: "color 100ms" }}>{mm}:{ss}</div>
-          </div>
-          <div className="text-center py-3 mb-6 px-3 rounded-lg" style={{ background: TOKENS.accentBg }}>
-            <div className="f-body text-xs uppercase tracking-wider font-bold mb-2" style={{ color: TOKENS.accentDark, letterSpacing: "0.08em" }}>Amount to transfer</div>
-            <div className="f-display font-bold text-4xl leading-tight" style={{ color: TOKENS.ink }}>₦{(amt + fee).toLocaleString()}</div>
-          </div>
-          <div className="rounded-xl p-5 mb-4 border-2" style={{ background: TOKENS.bgAlt, borderColor: TOKENS.lineSoft }}>
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <div className="f-body text-[10px] uppercase tracking-wider font-bold mb-1" style={{ color: TOKENS.mutedLight, letterSpacing: "0.08em" }}>Account number</div>
-                <div className="f-mono text-lg font-bold" style={{ color: TOKENS.ink }}>{acctNumber}</div>
-              </div>
-              <button onClick={copyAcct} className="f-body text-xs font-bold px-4 py-2 rounded-lg transition-all active:scale-95" style={{ background: copied ? TOKENS.success : TOKENS.accent, color: "#fff" }}>
-                {copied ? "✓ Copied" : "Copy"}
-              </button>
-            </div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="f-body" style={{ color: TOKENS.muted }}>Bank</span>
-              <span className="f-body font-medium" style={{ color: TOKENS.ink }}>Providus Bank</span>
-            </div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="f-body" style={{ color: TOKENS.muted }}>Account name</span>
-              <span className="f-mono text-xs" style={{ color: TOKENS.ink }}>MRDN-OKAFOR IMPORT</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="f-body" style={{ color: TOKENS.muted }}>Reference</span>
-              <span className="f-mono text-xs" style={{ color: TOKENS.ink }}>{ref}</span>
-            </div>
-          </div>
-          <div className="f-body text-xs flex items-start gap-2 p-3 rounded-lg" style={{ background: TOKENS.holdBg, color: TOKENS.hold }}>
-            <AlertTriangle size={14} className="mt-0.5 shrink-0" />
-            Transfer the exact amount shown from your business bank account — this account is generated for this payment only and expires with the timer above.
-          </div>
-        </Card>
-        <div className="flex items-center gap-2 f-body text-sm mb-4 justify-center" style={{ color: TOKENS.muted }}>
-          <RefreshCw size={14} className="animate-spin" /> Waiting for your transfer...
-        </div>
-        <div className="flex flex-col gap-2.5">
-          <PrimaryButton onClick={next} icon={CheckCircle2}>I've sent the transfer (demo: simulate webhook)</PrimaryButton>
-          <GhostButton onClick={() => setStage("review")}>Back to review</GhostButton>
-        </div>
+      </ButtonGroup>
       </div>
     );
   }
@@ -907,10 +795,10 @@ function ReviewScreen({ corridor, invoice, next, back }) {
           <span className="f-display font-bold text-xl" style={{ color: TOKENS.success }}>{c.currency} {converted}</span>
         </div>
       </Card>
-      <div className="flex gap-3">
+      <ButtonGroup>
         <GhostButton onClick={back}>Back</GhostButton>
         <PrimaryButton onClick={() => setStage("transfer")} icon={ArrowRight}>Continue to transfer</PrimaryButton>
-      </div>
+      </ButtonGroup>
     </div>
   );
 }
@@ -963,17 +851,28 @@ function TrackerScreen({ corridor, goHome, goDetail }) {
         </div>
 
         <div className="relative mb-8 mt-4">
-          <div className="absolute top-3 left-0 right-0 h-1 rounded-full" style={{ background: TOKENS.lineSoft }} />
-          <div className="absolute top-3 left-0 h-1 rounded-full transition-all duration-700" style={{ width: `${(idx / (steps.length - 1)) * 100}%`, background: TOKENS.accent, boxShadow: `0 0 0 3px ${TOKENS.accentBg}` }} />
-          <div className="flex justify-between relative">
+          <div className="flex items-center justify-between gap-2">
             {steps.map((s, i) => (
-              <div key={s.label} className="flex flex-col items-center" style={{ width: 56 }}>
-                <div className="w-3 h-3 rounded-full mb-3 transition-all duration-500" style={{ 
-                  background: i <= idx ? TOKENS.accent : TOKENS.surface,
-                  border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
-                  boxShadow: i === idx ? `0 0 0 4px ${TOKENS.accentBg}` : "none"
-                }} />
-                <span className="f-body text-[10px] text-center leading-tight font-medium" style={{ color: i <= idx ? TOKENS.ink : TOKENS.muted, fontWeight: i === idx ? 700 : 500 }}>{s.label}</span>
+              <div key={s.label} className="flex-1 flex items-center gap-2">
+                <div 
+                  className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-500"
+                  style={{
+                    background: i <= idx ? TOKENS.accent : TOKENS.bgAlt,
+                    color: i <= idx ? "#fff" : TOKENS.muted,
+                    border: `2px solid ${i <= idx ? TOKENS.accent : TOKENS.lineSoft}`,
+                    boxShadow: i === idx ? `0 0 0 4px ${TOKENS.accentBg}` : "none"
+                  }}
+                >
+                  {i <= idx ? "✓" : i + 1}
+                </div>
+                {i < steps.length - 1 && (
+                  <div 
+                    className="flex-1 h-1 rounded-full transition-all duration-500"
+                    style={{
+                      background: i < idx ? TOKENS.accent : TOKENS.lineSoft
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -1022,8 +921,10 @@ function TrackerScreen({ corridor, goHome, goDetail }) {
               </button>
             </div>
             <div className="flex flex-col gap-2.5">
-              <PrimaryButton onClick={goDetail} icon={ChevronRight}>View full details</PrimaryButton>
-              <GhostButton onClick={goHome} icon={LayoutGrid}>Back to dashboard</GhostButton>
+      <ButtonGroup>
+        <PrimaryButton onClick={goDetail} icon={ChevronRight}>View full details</PrimaryButton>
+        <GhostButton onClick={goHome} icon={LayoutGrid}>Back to dashboard</GhostButton>
+      </ButtonGroup>
             </div>
           </div>
         )}
@@ -1143,8 +1044,10 @@ function LimitReachedScreen({ upgrade, back }) {
           Complete full verification to remove this limit — no need to wait for it to reset next month.
         </div>
         <div className="flex flex-col gap-2.5">
-          <PrimaryButton onClick={upgrade} icon={ArrowRight}>Upgrade to full verification</PrimaryButton>
-          <GhostButton onClick={back}>Back to dashboard</GhostButton>
+      <ButtonGroup>
+        <PrimaryButton onClick={upgrade} icon={ArrowRight}>Upgrade to full verification</PrimaryButton>
+        <GhostButton onClick={back}>Back to dashboard</GhostButton>
+      </ButtonGroup>
         </div>
       </Card>
     </div>
@@ -1206,7 +1109,7 @@ function DetailScreen({ back }) {
           Full settlement evidence is available to support staff on request — not shown here by default.
         </div>
       </Card>
-      <div className="mt-6"><GhostButton onClick={back} icon={History}>Back to history</GhostButton></div>
+      <div className="mt-6"><ButtonGroup><GhostButton onClick={back} icon={History}>Back to history</GhostButton></ButtonGroup></div>
     </div>
   );
 }
@@ -1225,7 +1128,7 @@ export default function MrdnPrototype() {
   const showBottomNav = !["signup", "held", "expired", "rejected", "tier2upgrade"].includes(screen);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-8" style={{ background: "#DDE2E7" }}>
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-8" style={{ background: "#E8ECFF" }}>
       <style>{FONTS}</style>
       <div
         className="relative w-full overflow-hidden f-body"
