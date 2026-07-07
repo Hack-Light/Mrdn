@@ -770,13 +770,22 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
   );
 }
 
+function ReviewScreen({ corridor, invoice, next, back }) {
+  const c = CORRIDORS[corridor];
+  const { amount } = invoice;
+  const amt = parseFloat(amount);
+  const fee = Math.round(amt * 0.03);
+  const mm = Math.floor(45 / 60), ss = 45 % 60;
+  const rate = (Math.random() * 0.0001 + 0.00085).toFixed(5);
+  const converted = (amt * fee * parseFloat(rate)).toFixed(2);
+
   return (
     <div className="max-w-lg">
       <ScreenHeader eyebrow="New Payment · Step 3 of 3" title="Review & lock your rate" />
       <Card className="mb-5">
         <div className="flex justify-between items-center pb-4 mb-4 border-b" style={{ borderColor: TOKENS.line }}>
           <div className="f-body text-sm" style={{ color: TOKENS.muted }}>Rate locked for</div>
-          <div className="f-mono font-semibold text-lg" style={{ color: secs < 30 ? TOKENS.hold : TOKENS.ink }}>{mm}:{ss}</div>
+          <div className="f-mono font-semibold text-lg" style={{ color: ss < 30 ? TOKENS.hold : TOKENS.ink }}>{mm}:{ss}</div>
         </div>
         <div className="flex justify-between mb-3">
           <span className="f-body text-sm" style={{ color: TOKENS.muted }}>You send</span>
@@ -797,7 +806,7 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
       </Card>
       <ButtonGroup>
         <GhostButton onClick={back}>Back</GhostButton>
-        <PrimaryButton onClick={() => setStage("transfer")} icon={ArrowRight}>Continue to transfer</PrimaryButton>
+        <PrimaryButton onClick={next} icon={ArrowRight}>Continue to transfer</PrimaryButton>
       </ButtonGroup>
     </div>
   );
