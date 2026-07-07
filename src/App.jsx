@@ -770,6 +770,54 @@ function CorridorScreen({ corridor, setCorridor, supplier, setSupplier, next, ba
   );
 }
 
+function ConfirmBeneficiaryScreen({ corridor, next, back }) {
+  const [flagged, setFlagged] = useState(false);
+  const isIndia = corridor === "india";
+  const maskedName = isIndia ? "r***** s*********" : "ÖS*** ÇO***";
+  const sourceCopy = isIndia
+    ? "UPI returns the account holder's name for confirmation before a transfer. For privacy, part of the name is masked."
+    : "Turkish banks return the account holder's name for confirmation before a transfer. For privacy, part of the name is masked.";
+  const fixCopy = isIndia
+    ? "Good catch. Go back and double-check the UPI VPA with your supplier before continuing — a small typo is the most common cause of a mismatch."
+    : "Good catch. Go back and double-check the IBAN with your supplier before continuing — a small typo is the most common cause of a mismatch.";
+  return (
+    <div className="max-w-lg">
+      <ScreenHeader eyebrow="New Payment · Beneficiary Check" title="Confirm your supplier's account" subtitle="We checked this account with the bank before you send anything." />
+      <Card className="mb-5">
+        <div className="flex items-start gap-3 mb-5">
+          <ShieldAlert size={20} style={{ color: TOKENS.accentDark }} className="mt-0.5" />
+          <div className="f-body text-sm" style={{ color: TOKENS.muted }}>
+            {sourceCopy}
+          </div>
+        </div>
+        <div className="rounded-xl p-4 mb-4 text-center" style={{ background: TOKENS.bg }}>
+          <div className="f-body text-[10px] uppercase tracking-wide font-semibold mb-1.5" style={{ color: TOKENS.muted }}>Account holder on file</div>
+          <div className="f-mono font-semibold text-lg" style={{ color: TOKENS.ink }}>{maskedName}</div>
+        </div>
+        <p className="f-body text-sm mb-1" style={{ color: TOKENS.ink }}>Does this match your supplier's name?</p>
+      </Card>
+      {!flagged ? (
+        <ButtonGroup>
+          <PrimaryButton onClick={next} icon={CheckCircle2}>Yes, this matches</PrimaryButton>
+          <GhostButton onClick={() => setFlagged(true)} icon={AlertTriangle}>This doesn't look right</GhostButton>
+        </ButtonGroup>
+      ) : (
+        <Card>
+          <div className="flex items-start gap-3 mb-4">
+            <AlertTriangle size={20} style={{ color: TOKENS.hold }} className="mt-0.5" />
+            <div className="f-body text-sm" style={{ color: TOKENS.ink }}>
+              {fixCopy}
+            </div>
+          </div>
+          <ButtonGroup>
+            <PrimaryButton onClick={back} icon={ArrowLeft}>Back to supplier details</PrimaryButton>
+          </ButtonGroup>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 function ReviewScreen({ corridor, invoice, next, back }) {
   const c = CORRIDORS[corridor];
   const { amount } = invoice;
